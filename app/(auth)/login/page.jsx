@@ -1,16 +1,30 @@
 'use client';
 
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LoginApi } from '../../../utils/fetchapi';
 import { toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
 import { useQueryClient } from '@tanstack/react-query';
-
+import { signIn, useSession } from "next-auth/react"
 const Login = () => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { data } = useSession();
+  useEffect(()=>{
+    console.log("usesession",data);
+  },[data])
+  const handleGoogleLogin = async () => {
+    try {
+      await signIn("google", {
+        callbackUrl: "http://localhost:3000",
+        redirect: true,
+      });
+    } catch (error) {
+      console.error("Login Trigger Error:", error);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -33,7 +47,7 @@ const Login = () => {
   return (
     <section className="min-h-screen bg-[#f8f8f8] flex items-center justify-center p-4 md:p-10">
       <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-white p-8 md:p-16 rounded-[3rem] shadow-sm">
-        
+
         {/* Left Side: Form */}
         <div className="flex flex-col w-full max-w-md mx-auto lg:mx-0">
           <h1 className="text-5xl font-bold text-black mb-2 tracking-tight">
@@ -74,8 +88,8 @@ const Login = () => {
               </Link>
             </div>
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="w-full py-4 bg-[#fff200] hover:bg-yellow-400 text-black font-bold rounded-full transition-all active:scale-[0.98] shadow-md text-lg"
             >
               Login
@@ -87,8 +101,9 @@ const Login = () => {
               <div className="flex-grow border-t border-gray-300"></div>
             </div>
 
-            <button 
-              type="button" 
+            <button
+              onClick={handleGoogleLogin}
+              type="button"
               className="w-full py-4 border border-black rounded-full flex items-center justify-center gap-3 font-bold hover:bg-gray-50 transition-all"
             >
               <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="w-5 h-5" />
@@ -113,10 +128,10 @@ const Login = () => {
 
         {/* Right Side: Image */}
         <div className="hidden lg:block relative h-full min-h-[500px]">
-          <img 
-             src="https://images.unsplash.com/photo-1550345332-09e3ac987658?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGd5bXxlbnwwfHwwfHx8MA%3D%3DF"
+          <img
+            src="https://images.unsplash.com/photo-1550345332-09e3ac987658?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGd5bXxlbnwwfHwwfHx8MA%3D%3DF"
             // src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=1000&auto=format&fit=crop" 
-            alt="Workout" 
+            alt="Workout"
             className="absolute inset-0 w-full h-full object-cover rounded-[2.5rem]"
           />
         </div>

@@ -6,12 +6,14 @@ import { useLogoutUser, useUser } from "../queries/userqueries";
 import { toast } from "react-toastify";
 import { useProduct } from "../queries/product";
 import { useState } from "react";
+import { signOut } from "next-auth/react";
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const logoutUSer = useLogoutUser();
     const { data: user } = useUser();
     const router = useRouter();
     const { data } = useProduct();
+    
     const navItems = [
         { name: "Home", href: "/" },
         { name: "About", href: "/about" },
@@ -28,6 +30,7 @@ const Navbar = () => {
     const logout = async () => {
         try {
             const response = await logoutUSer.mutateAsync();
+            signOut();
             toast.success(response?.message || "Logged out successfully");
             setIsOpen(false);
         } catch (error) {

@@ -6,15 +6,14 @@ import { NextResponse } from "next/server";
 export async function PUT(req) {
     try {
         const { id } = await req.json();
-        const userid = await getUserData();
-        console.log(id,userid.id);
+        const userid = await getUserData(req);
         if (!id || !userid) {
             return NextResponse.json({
                 message: "The id,s are missing",
                 success: false
             }, { status: 400 })
         };
-        const user = await User.findByIdAndUpdate(userid.id,
+        const user = await User.findByIdAndUpdate(userid,
             { $pull: { favorites: id } },
             { new: true }
         );

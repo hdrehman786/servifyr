@@ -25,7 +25,6 @@ export async function POST(req) {
                 }
             ).end(buffer);
         });
-        console.log("Upload successful:", uploaderResult);
         return NextResponse.json({
             file: uploaderResult
         })

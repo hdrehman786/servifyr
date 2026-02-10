@@ -8,15 +8,16 @@ export async function PUT(req) {
         await connectDB();
         const body = await req.json();
         const { id } = body;
-        const userData = await getUserData();
+        const userData = await getUserData(req);
 
-        if (!id || !userData?.id) {
+        if (!id || !userData) {
             return NextResponse.json({
                 message: "Required IDs are missing",
                 success: false
             }, { status: 400 });
         };
-        const currentUser = await User.findById(userData.id);
+        console.log("datatat",userData);
+        const currentUser = await User.findById(userData);
 
         if (currentUser.favorites.includes(id)) {
             return NextResponse.json({
@@ -26,7 +27,7 @@ export async function PUT(req) {
         }
 
         const user = await User.findByIdAndUpdate(
-            userData.id,
+            userData,
             { $addToSet: { favorites: id } },
             { new: true }
         );

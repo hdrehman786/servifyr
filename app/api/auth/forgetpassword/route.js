@@ -1,6 +1,4 @@
 import { NextResponse } from "next/server";
-import connectDB from "../../../../lib/db";
-import User from "../../../../models/User";
 import { sendEmail } from "../../../../lib/sendmails";
 
 export async function POST(req) {

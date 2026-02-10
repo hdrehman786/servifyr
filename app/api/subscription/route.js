@@ -4,7 +4,7 @@ import User from "../../../models/User";
 export async function PUT(req) {
     try {
         const { name } = await req.json();
-        const { id } = await getUserData();
+        const  id  = await getUserData(req);
         const existSubscription = await User.findById(id);
         if (existSubscription.subscription.isActive) {
             return NextResponse.json({

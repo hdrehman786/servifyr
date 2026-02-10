@@ -6,7 +6,7 @@ import connectDB from "../../../../lib/db";
 export async function GET(req) {
     try {
         await connectDB();
-        const res = await getUserData();
+        const res = await getUserData(req);
         if (!res) {
             return NextResponse.json({
                 message: "Please login for access",
@@ -14,7 +14,7 @@ export async function GET(req) {
                 success: false,
             })
         };
-        const user = await User.findById(res.id).populate("favorites enrolledPrograms");
+        const user = await User.findById(res).populate("favorites enrolledPrograms");
         if (!user) {
             return NextResponse.json({
                 message: "User not found againts this id"

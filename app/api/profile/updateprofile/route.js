@@ -6,7 +6,7 @@ import { getUserData } from "../../../../lib/genratetoken";
 export async function PUT(req) {
     try {
         const data = await req.json();
-        const {id} = await getUserData();
+        const id = await getUserData(req);
         if (!data) {
             return NextResponse.json({
                 message: "No data provided",

@@ -1,12 +1,17 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SessionProvider } from "next-auth/react";
+import { useState } from "react";
 
+export const Providers = ({ children }) => {
+    const [queryClient] = useState(() => new QueryClient());
 
-export const Providers = ({ children })=>{
     return (
-        <QueryClientProvider client={new QueryClient()}>
-            {children}
-        </QueryClientProvider>
-    )
-}
+        <SessionProvider>
+            <QueryClientProvider client={queryClient}>
+                {children}
+            </QueryClientProvider>
+        </SessionProvider>
+    );
+};

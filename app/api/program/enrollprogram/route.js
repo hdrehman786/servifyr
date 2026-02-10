@@ -10,7 +10,7 @@ export async function PUT(req) {
 
         const { programId } = await req.json();
 
-        const { id } = await getUserData();
+        const  id  = await getUserData(req);
         const existingPrg = await User.findById(id);
         if (existingPrg.enrolledPrograms.length >= 2) {
             return NextResponse.json({
